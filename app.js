@@ -60,7 +60,7 @@ var UIController = (function() {
             return{
             type: document.querySelector('.add__type').value,
             description: document.querySelector('.add__description').value,
-            value: document.querySelector('.add__value').value
+            value: parseFloat(document.querySelector('.add__value').value)
             }
         },
 
@@ -98,6 +98,8 @@ var UIController = (function() {
             fieldsArray.forEach(function(current) {
                 current.value = "";
             });
+
+            fieldsArray[0].focus();
         }
     };
 
@@ -118,12 +120,20 @@ var appController = (function(budgetCtrl, UICtrl) {
         });
     }
 
+    var updateBudget = function() {
+        //1. calculate the budget
+
+        //2. returns the budget
+
+        //3. display the budget - UI
+    }
 
     var addItem = function() {
         var input, newItem
         // 1. input data
         input = UICtrl.getInput();
 
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
         // 2. Add item to budgetController
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
@@ -132,15 +142,17 @@ var appController = (function(budgetCtrl, UICtrl) {
 
         //4. clear the fields
         UICtrl.clearFields();
-        //5. calculate the budget
+        
+        //calculate and update budget
+        updateBudget();
 
-        //6. display the budget - UI
-    
+        } else {
+            alert('please add description and/or value')
+        }
     };
 
 return {
     init: function() {
-        console.log('all setup?')
         allEventListeners();
     }
 }
