@@ -211,7 +211,13 @@ var appController = (function(budgetCtrl, UICtrl) {
 
 return {
     init: function() {
-        UICtrl.addBudgetDetails(budget)
+        UICtrl.addBudgetDetails({
+            budget: 0,
+            totalInc: 0,
+            totalExp: 0,
+            percentage: -1
+        })
+        
         allEventListeners();
     }
 }
