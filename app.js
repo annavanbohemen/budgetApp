@@ -36,9 +36,9 @@ var budgetController = (function() {
             };
 
             //create newItem inc or exp
-            if (type === exp) {
+            if (type === 'exp') {
                 newItem = new Expense(ID, des, val);
-            } else if (type === inc) {
+            } else if (type === 'inc') {
                 newItem = new Income(ID, des, val);
             }
             
@@ -62,6 +62,29 @@ var UIController = (function() {
             description: document.querySelector('.add__description').value,
             value: document.querySelector('.add__value').value
             }
+        },
+
+        addListItem: function(obj, type){
+            var html, newHtml, element;
+            //create HTML string with placeholder txt
+            if (type === 'inc') {
+                element = '.income__list'
+
+                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+            
+            } else if (type === 'exp') {
+                element = '.expenses__list'
+
+                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+            }
+
+            // replace placeholder text with date
+            newHtml = html.replace('%id%', obj.id);
+            newHtml = newHtml.replace('%description%', obj.description);
+            newHtml = newHtml.replace('%value%', obj.value);
+
+            // insert HTML into DOM
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         }
     };
 
@@ -92,7 +115,7 @@ var appController = (function(budgetCtrl, UICtrl) {
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
         //3. Add item to UIController
-
+        UICtrl.addListItem(newItem, input.type);
         //4. calculate the budget
 
         //5. display the budget - UI
