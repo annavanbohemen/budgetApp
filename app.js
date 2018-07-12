@@ -1,6 +1,54 @@
 var budgetController = (function() {
 
- // some code
+    var Expense = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    };
+
+
+    var Income = function(id, description, value) {
+        this.id = id;
+        this.description = description;
+        this.value = value;
+    }
+
+    var data = {
+        allItems: {
+            exp: [],
+            inc: []
+        },
+        totals: {
+            exp: 0,
+            inc: 0
+        }
+    };
+
+    return {
+        addItem: function(type, des, val){
+            var newItem
+
+            //create new ID for newItem
+            if (data.allItems[type].length > 0) {
+                ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+            } else {
+                ID = 0
+            };
+
+            //create newItem inc or exp
+            if (type === exp) {
+                newItem = new Expense(ID, des, val);
+            } else if (type === inc) {
+                newItem = new Income(ID, des, val);
+            }
+            
+            //push tot data structure
+            data.allItems[type].push(newItem);
+
+            //return new element
+            return newItem;
+        }
+    };
 
 })();
 
@@ -36,10 +84,12 @@ var appController = (function(budgetCtrl, UICtrl) {
 
 
     var addItem = function() {
-
+        var input, newItem
         // 1. input data
-        var input = UICtrl.getInput();
+        input = UICtrl.getInput();
+
         // 2. Add item to budgetController
+        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
         //3. Add item to UIController
 
